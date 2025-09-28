@@ -1,0 +1,69 @@
+﻿@model IDClassificationNew1.Models.IDViewModel
+@{
+    ViewData["Title"] = "ID Classification";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">ID Classification</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="IDClassification" method="post" enctype="multipart/form-data" class="border p-4 rounded bg-light">
+                <div class="form-group mb-3">
+                    <label for="file" class="form-label">Upload ID Image:</label>
+                    <input type="file" name="file" id="file" class="form-control" accept="image/*" required />
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Classify ID</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (Model != null)
+    {
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Classification Result</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <strong>ID Type:</strong> <span class="badge bg-info">@Model.lable</span>
+                        </div>
+                        <div>
+                            <strong>Confidence:</strong> <span class="badge bg-success">@Model.ProbabilityString</span>
+                        </div>
+                        @if (@Model.done != null)
+                        {
+                            <div>
+                                <strong>Done:</strong> <span class="badge bg-success">@Model.done</span>
+                            </div>
+
+                            <div>
+                                <strong>textExtracted:</strong> <span class="badge bg-success">@Model.textExtracted</span>
+                            </div>
+                            
+                        }
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Client-side validation to ensure a file is selected
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const fileInput = document.getElementById('file');
+            if (fileInput.files.length === 0) {
+                e.preventDefault();
+                alert('Please select a file to upload.');
+            }
+        });
+    </script>
+}
